@@ -39,10 +39,15 @@ num_repeats = 30
 knn_errors = []
 linear_regression_errors = []
 
+# Tamanho do conjunto de dados
+len_train_data = int(len(data) * 0.7)
+len_val_data = int(len(data) * 0.1)
+len_test_data = int(len(data) * 0.2)
+
 for _ in range(num_repeats):
     # Dividir os dados em treino (70%), validação (10%) e teste (20%)
-    train_data, test_data = train_test_split(data, test_size=0.3)
-    val_data, test_data = train_test_split(test_data, test_size=0.66)
+    train_data, test_data = train_test_split(data, test_size=3/10)
+    val_data, test_data = train_test_split(test_data, test_size=2/3)
     
     # Separar as variáveis covariáveis e a variável resposta
     X_train = train_data.drop(response_variable, axis=1)
@@ -95,14 +100,20 @@ knn_error_interval = np.percentile(knn_errors, [2.5, 97.5])
 linear_regression_error_interval = np.percentile(linear_regression_errors, [2.5, 97.5])
 
 # Imprimir os resultados
+print("Tamanho do conjunto de dados:\t\t\t", len(data))
+print("Tamanho do conjunto de treino:\t\t\t", len_train_data)
+print("Tamanho do conjunto de testes:\t\t\t", len_test_data)
+print("Tamanho do conjunto de validação:\t\t", len_val_data)
+print()
+
 print("KNN:")
-print("Estimativa pontual do erro médio:", knn_mean_error)
-print("Intervalo de confiança (95%) para o erro médio:", knn_error_interval)
+print("Estimativa pontual do erro médio:\t\t", knn_mean_error)
+print("Intervalo de confiança (95%) para o erro médio:\t", knn_error_interval)
 print()
 
 print("Regressão Linear:")
-print("Estimativa pontual do erro médio:", linear_regression_mean_error)
-print("Intervalo de confiança (95%) para o erro médio:", linear_regression_error_interval)
+print("Estimativa pontual do erro médio:\t\t", linear_regression_mean_error)
+print("Intervalo de confiança (95%) para o erro médio:\t", linear_regression_error_interval)
 print()
 
 # Comparar os modelos
